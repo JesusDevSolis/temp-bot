@@ -9,6 +9,9 @@ use App\Http\Controllers\BitrixOAuthController;
 use App\Http\Controllers\BitrixWebhookController;
 use App\Http\Controllers\BitrixMaintenanceController;
 use App\Http\Controllers\BitrixBotUpdateController;
+use App\Http\Controllers\BitrixMarketController;
+use App\Http\Controllers\WebhookController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,77 +25,80 @@ use App\Http\Controllers\BitrixBotUpdateController;
 Route::prefix('v1.0.0')->group(function () {
 
     // [1] Ruta de instalación/autorización de la app en Bitrix
-    // Soporta GET y POST según cómo Bitrix envíe el request.
-    Route::match(['get', 'post'], 'bitrix/oauth/authorize', [
+    Route::match(['get', 'post', 'head'], 'bitrix/oauth/authorize', [
         BitrixOAuthController::class,
         'install'
     ]);
 
-    // [1.1] Endpoint para desinstalación: Bitrix notificará aquí al eliminar la app
-    Route::match(['get', 'post'], 'bitrix/oauth/uninstall', [
+    // [1.1] Endpoint para desinstalación
+    Route::match(['get', 'post', 'head'], 'bitrix/oauth/uninstall', [
         BitrixOAuthController::class,
         'uninstall'
     ]);
 
-    // [2] Ruta de callback de OAuth para recibir el authorization_code
-    // e intercambiarlo por access_token y refresh_token.
-    Route::get('bitrix/oauth/callback', [
+    // [2] Callback OAuth
+    Route::match(['get', 'post', 'head'], 'bitrix/oauth/callback', [
         BitrixOAuthController::class,
         'callback'
     ]);
 
-    // [3] Registrar o actualizar la configuración de una instancia Bitrix.
-    // Se usa para guardar el portal, client_id, client_secret y auth_token.
+    // [3] Setup instancia Bitrix
     Route::post('bitrix/instance/setup', [
         BitrixInstanceSetupController::class, 
         'setup'
     ])->middleware('verify.bitrix');
 
-    // [4] Webhook de entrada desde Bitrix hacia Ánima:
-    // Recibe mensajes de usuario desde canales conectados (ej. Telegram).
-    // Protegida por middleware de validación de firma o token.
+    // [4] Webhook de entrada desde Bitrix
     Route::post('webhook/bitrix/message', [
         BitrixWebhookController::class,
         'handle'
     ]);
 
-    // [5] Activar o desactivar el bot para el portal actual.
-    // Se usa para alternar entre modo bot y modo agente humano.
+    // [5] Toggle bot
     Route::post('bitrix/bot-toggle', [
         BitrixBotToggleController::class, 
         'toggle'
     ])->middleware('verify.bitrix');
 
-    // [6] Consultar el estado actual del bot (activo o inactivo).
+    // [6] Estado bot
     Route::get('bitrix/bot-status', [
         BitrixBotToggleController::class, 
         'status'
     ])->middleware('verify.bitrix');
     
-    // [7] Realizar una transferencia manual desde el bot hacia un agente.
+    // [7] Transferencia manual
     Route::post('bitrix/manual-transfer', [
         BitrixManualTransferController::class,
         'transfer'
     ])->middleware('verify.bitrix');
 
-    // [8] Endpoint para actualizar el `hash` de un portal Bitrix.
-    // Usado cuando se desea cambiar dinámicamente el árbol conversacional.
+    // [8] Update hash
     Route::post('bitrix/update-hash', [
         BitrixInstanceController::class, 
         'updateHash'
     ])->middleware('verify.bitrix');
 
-    // [9] Cambiar el nombre del bot registrado en Bitrix
+    // [9] Update nombre bot
     Route::post('bitrix/bot-update-name', [
         BitrixBotUpdateController::class,
         'updateName'
     ])->middleware('verify.bitrix');
 
-    // [10] Ruta para mantenimiento y limpieza de datos antiguos.
-    // Protegida por una clave secreta en el query string.
+    // [10] Mantenimiento
     Route::post('bitrix/maintenance/reset', [
         BitrixMaintenanceController::class,
         'resetBitrixData'
     ]);
+
+    // 🔹 Rutas Bitrix Market (agregamos HEAD aquí también)
+    Route::match(['get', 'post', 'head'], 'bitrix/install', [BitrixMarketController::class, 'install']);
+    Route::match(['get', 'post', 'head'], 'bitrix/uninstall', [BitrixMarketController::class, 'uninstall']);  
+    Route::match(['get', 'post', 'head'], 'bitrix/app', [BitrixMarketController::class, 'app']);
+
+    // 🔹 Webhooks auxiliares
+    Route::post('/webhook/config', [WebhookController::class, 'saveConfig']);
+    Route::get('/webhook/config', [WebhookController::class, 'getConfig']);
+    Route::post('/webhook/update-bot-name', [WebhookController::class, 'updateBotName']);
+    Route::post('/webhook/uninstall', [WebhookController::class, 'handleUninstall']);
 
 });
