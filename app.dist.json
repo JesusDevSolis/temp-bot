@@ -1,39 +1,53 @@
 {
   "CODE": "anima.bot.integration",
-  "DEVELOPER_NAME": "Ánima Bot",
-  "PARTNER_URL": "https://previ.com.ar",
-  "PRIVACY_URL": "https://anima.bot/politica-privacidad/",
-  "TERMS_URL": "https://anima.bot/terminos-y-condiciones/",
-  "EMAIL": "info@previ.com.ar",
-  "CATEGORY": "automation",
-  "PRICE": "paid",
+  "VERSION": "1.0.0",
+  "LANG": "es",
+  "TYPE": "REST",
+  "ENCODING": "utf-8",
   "VISIBLE": true,
+  "STAGE": "PUBLIC",
+  "PRICE": "paid",
+  "CATEGORY": "automation",
+  "ICON": "icon.png",
+
   "NAME": {
-    "en": "Ánima Chatbot for Bitrix24",
     "es": "Chatbot Ánima para Bitrix24",
+    "en": "Ánima Chatbot for Bitrix24",
     "ru": "Чат-бот Ánima для Bitrix24"
   },
+
   "DESCRIPTION": {
-    "en": "Connect Bitrix24 with the Ánima conversational engine.",
-    "es": "Conecta Bitrix24 con el motor conversacional de Ánima.",
-    "ru": "Подключите Bitrix24 к разговорному ИИ-движку Ánima."
+    "es": "Conecta tu cuenta de Bitrix24 con el motor conversacional de Ánima para automatizar la atención de clientes, derivar casos y registrar interacciones directamente desde tus canales conectados. Ánima es una solución de inteligencia artificial que te permite automatizar flujos, responder preguntas frecuentes, recopilar datos y entregar experiencias personalizadas.",
+    "en": "Connect your Bitrix24 account with Ánima’s conversational AI engine to automate customer support, route cases, and log interactions directly from your connected channels. Ánima helps you automate flows, answer frequent questions, collect data, and deliver personalized experiences.",
+    "ru": "Подключите свою учетную запись Bitrix24 к разговорному ИИ-движку Ánima, чтобы автоматизировать поддержку клиентов, направлять обращения и регистрировать взаимодействия прямо из подключенных каналов. Ánima помогает автоматизировать процессы, отвечать на частые вопросы, собирать данные и предоставлять персонализированный опыт."
   },
-  "VERSION": "1.0.0",
-  "LANG": "en",
+
   "INSTALL_URL": "https://test-bitrix.anima.bot/api/v1.0.0/bitrix/oauth/authorize",
   "UNINSTALL_URL": "https://test-bitrix.anima.bot/api/v1.0.0/bitrix/oauth/uninstall",
-  "SUPPORT_URL": "https://anima.bot/contacto/",
-  "SUPPORT_EMAIL": "mesadeayuda@previ.com.ar",
   "REDIRECT_URI": "https://test-bitrix.anima.bot/api/v1.0.0/bitrix/oauth/callback",
+  
+  "SETTINGS_URL": "https://test-bitrix.anima.bot/setup",
+
+  "SUPPORT_URL": "https://anima.bot/contact",
+  "SUPPORT_EMAIL": "mesadeayuda@previ.com.ar",
+  "EMAIL": "info@previ.com.ar",
+
+  "PRIVACY_URL": "https://anima.bot/politica-privacidad/",
+  "TERMS_URL": "https://anima.bot/terminos-y-condiciones/",
+  "PARTNER_URL": "https://previ.com.ar",
+  "DEVELOPER_NAME": "Ánima Bot",
+
   "SCOPE": [
     "imbot",
     "im",
     "user",
     "log"
   ],
+
   "PLACEMENT": [],
-  "TYPE": "REST",
-  "ENCODING": "utf-8",
-  "ICON": "icon.png",
-  "STAGE": "PUBLIC"
+  "REST": {
+    "app": "https://test-bitrix.anima.bot/api/v1.0.0/bitrix/app",
+    "install": "https://test-bitrix.anima.bot/api/v1.0.0/bitrix/install",
+    "uninstall": "https://test-bitrix.anima.bot/api/v1.0.0/bitrix/uninstall"
+  }
 }
